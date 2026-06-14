@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>💕 LovePage Pro · Make Them Say Yes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=Pacifico&family=Great+Vibes&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -40,45 +40,87 @@
     .watermark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 50; pointer-events: none; opacity: 0.08; }
     .watermark span { font-family: 'Playfair Display', serif; font-size: clamp(1rem,5vw,2rem); color: #fff; transform: rotate(-25deg); white-space: nowrap; font-weight: bold; }
     .top-controls { position: absolute; top: 20px; left: 16px; right: 16px; display: flex; justify-content: space-between; z-index: 60; gap: 10px; }
-    .back-btn-prev, .mute-btn { background: rgba(255,255,255,0.9); border: none; border-radius: 60px; padding: 0.5rem 1.2rem; font-weight: 600; cursor: pointer; }
+    .back-btn-prev, .mute-btn { background: rgba(255,255,255,0.9); border: none; border-radius: 60px; padding: 0.5rem 1.2rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
     #expContent { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5rem 1.5rem 7rem; text-align: center; overflow-y: auto; }
-    .exp-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,7vw,3.2rem); color: #fff; text-shadow: 0 0 25px rgba(0,0,0,0.3); margin-bottom: 1rem; white-space: pre-line; }
-    .exp-msg { font-size: clamp(0.9rem,3vw,1.1rem); color: rgba(255,255,255,0.95); max-width: 500px; margin: 0 auto 2rem; }
+    
+    /* ===== CLASSY & ROMANTIC FONTS FOR EXPERIENCE PAGE ===== */
+    .exp-title { 
+      font-family: 'Great Vibes', cursive; 
+      font-size: clamp(2.5rem, 9vw, 4.5rem); 
+      color: #fff; 
+      text-shadow: 0 0 20px rgba(0,0,0,0.4), 2px 2px 4px rgba(0,0,0,0.2);
+      margin-bottom: 1rem; 
+      white-space: pre-line;
+      letter-spacing: 2px;
+      font-weight: normal;
+    }
+    .exp-msg { 
+      font-family: 'Playfair Display', serif; 
+      font-size: clamp(1rem, 4vw, 1.3rem); 
+      font-style: italic;
+      color: rgba(255,255,255,0.95); 
+      max-width: 500px; 
+      margin: 0 auto 2rem; 
+      background: rgba(0,0,0,0.15);
+      backdrop-filter: blur(8px);
+      padding: 0.5rem 1rem;
+      border-radius: 60px;
+    }
+    .yes-btn, .no-btn {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .celeb-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2rem,7vw,3.8rem);
+      color: #FFE484;
+      text-shadow: 3px 3px 0 #c44569;
+      letter-spacing: 1px;
+    }
+    .celeb-msg {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.4rem,5vw,2rem);
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(12px);
+      padding: 0.6rem 1.5rem;
+      border-radius: 60px;
+      color: white;
+      font-weight: normal;
+    }
+    
     .btn-row { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; position: relative; }
-    .yes-btn { padding: 0.9rem 2.5rem; font-size: 1.2rem; font-weight: 700; border: none; border-radius: 60px; background: linear-gradient(45deg, #ff69b4, #ff1493); color: white; box-shadow: 0 12px 30px rgba(255,20,147,0.5); cursor: pointer; transition: 0.2s; }
+    .yes-btn { padding: 0.9rem 2.5rem; font-size: 1.3rem; font-weight: 700; border: none; border-radius: 60px; background: linear-gradient(45deg, #ff69b4, #ff1493); color: white; box-shadow: 0 12px 30px rgba(255,20,147,0.5); cursor: pointer; transition: 0.2s; }
     .yes-btn:hover { transform: scale(1.08); }
     .no-btn { padding: 0.9rem 2.5rem; font-size: 1.2rem; font-weight: 600; border: none; border-radius: 60px; background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.7); backdrop-filter: blur(6px); cursor: pointer; position: fixed; z-index: 200; transition: left 0.08s, top 0.08s; }
-    #sarcasmToast { position: fixed; bottom: 130px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); backdrop-filter: blur(18px); color: #fff0f5; padding: 0.7rem 1.5rem; border-radius: 60px; font-size: 1rem; font-weight: 600; z-index: 300; opacity: 0; pointer-events: none; transition: 0.2s; white-space: nowrap; }
+    #sarcasmToast { position: fixed; bottom: 130px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); backdrop-filter: blur(18px); color: #fff0f5; padding: 0.7rem 1.5rem; border-radius: 60px; font-size: 1rem; font-weight: 600; z-index: 300; opacity: 0; pointer-events: none; transition: 0.2s; white-space: nowrap; font-family: 'Playfair Display', serif; }
     #sarcasmToast.show { opacity: 1; transform: translateX(-50%) translateY(-5px); }
     #celebScreen { display: none; flex-direction: column; align-items: center; width: 100%; gap: 1rem; }
-    .celeb-title { font-family: 'Pacifico', cursive; font-size: clamp(2rem,7vw,3.5rem); color: #FFE484; text-shadow: 4px 4px 0 #c44569; animation: bounceCrazy 0.7s infinite alternate; }
-    @keyframes bounceCrazy { 0% { transform: translateY(0px); } 100% { transform: translateY(-12px); } }
-    .celeb-msg { font-family: 'Playfair Display', serif; font-size: clamp(1rem,4vw,1.5rem); background: rgba(0,0,0,0.2); backdrop-filter: blur(12px); padding: 0.8rem 1.5rem; border-radius: 60px; color: white; font-weight: 600; }
     .gif-box { width: min(260px,70vw); height: min(260px,70vw); border-radius: 28px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4); background: #ffdfe8; border: 3px solid gold; }
     .gif-box img { width: 100%; height: 100%; object-fit: cover; }
     .confetti-layer { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
     .cele-heart { position: absolute; animation: confettiRain linear forwards; }
     @keyframes confettiRain { 0% { transform: translateY(100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(-50px) rotate(720deg); opacity: 0; } }
     #bottomStrip { position: absolute; bottom: 0; left: 0; right: 0; z-index: 70; padding: 1rem 1.2rem env(safe-area-inset-bottom); display: flex; flex-direction: column; align-items: center; gap: 0.8rem; }
-    .gen-link-btn { padding: 0.7rem 2rem; border: none; border-radius: 60px; background: rgba(255,255,255,0.96); color: var(--deep); font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.2); display: inline-flex; align-items: center; gap: 8px; }
+    .gen-link-btn { padding: 0.7rem 2rem; border: none; border-radius: 60px; background: rgba(255,255,255,0.96); color: var(--deep); font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.2); display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Sans', sans-serif; }
     #linkBox { display: none; background: rgba(255,255,255,0.98); border-radius: 28px; padding: 1rem; text-align: center; width: 100%; max-width: 380px; }
-    .link-url { background: #fff0f5; border-radius: 16px; padding: 0.6rem; font-size: 0.75rem; word-break: break-all; margin: 0.5rem 0; }
+    .link-url { background: #fff0f5; border-radius: 16px; padding: 0.6rem; font-size: 0.75rem; word-break: break-all; margin: 0.5rem 0; font-family: monospace; }
     .link-btns { display: flex; gap: 0.7rem; justify-content: center; }
-    .copy-link-btn, .wa-btn { padding: 0.5rem 1rem; border-radius: 60px; font-weight: 600; border: none; cursor: pointer; }
+    .copy-link-btn, .wa-btn { padding: 0.5rem 1rem; border-radius: 60px; font-weight: 600; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
     .copy-link-btn { background: var(--pink); color: white; }
     .wa-btn { background: #25D366; color: white; display: flex; align-items: center; gap: 5px; }
     #panelOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 190; backdrop-filter: blur(5px); }
     #payPanel { display: none; background: white; border-radius: 32px; padding: 1.5rem; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); width: calc(100% - 2rem); max-width: 360px; z-index: 200; box-shadow: 0 20px 40px rgba(0,0,0,0.3); animation: slideUp 0.25s; }
     @keyframes slideUp { from { transform: translateX(-50%) translateY(30px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
-    .panel-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.3rem; cursor: pointer; }
+    .panel-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.3rem; cursor: pointer; font-family: monospace; }
     .pay-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
-    .coupon-input { flex: 1; padding: 0.7rem; border: 1.5px solid #f0d6e0; border-radius: 16px; background: #fffafb; }
+    .coupon-input { flex: 1; padding: 0.7rem; border: 1.5px solid #f0d6e0; border-radius: 16px; background: #fffafb; font-family: 'DM Sans', sans-serif; }
     .apply-btn { background: var(--deep); color: white; border: none; padding: 0 1rem; border-radius: 40px; font-weight: bold; cursor: pointer; }
-    .pay-btn { width: 100%; padding: 0.85rem; background: linear-gradient(135deg, #ff6b9d, #c44569); border: none; border-radius: 60px; color: white; font-weight: 800; font-size: 1rem; margin-top: 0.5rem; cursor: pointer; }
+    .pay-btn { width: 100%; padding: 0.85rem; background: linear-gradient(135deg, #ff6b9d, #c44569); border: none; border-radius: 60px; color: white; font-weight: 800; font-size: 1rem; margin-top: 0.5rem; cursor: pointer; font-family: 'DM Sans', sans-serif; }
     .burst-heart { position: fixed; font-size: 32px; z-index: 400; animation: burstOut 1.2s ease-out forwards; pointer-events: none; }
     @keyframes burstOut { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.2) translate(var(--tx), var(--ty)); opacity: 0; } }
     @media (max-width: 480px) { .form-card { padding: 1.8rem; } .yes-btn, .no-btn { font-size: 1rem; padding: 0.7rem 1.5rem; } }
-    .music-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: white; padding: 6px 14px; border-radius: 50px; font-size: 12px; z-index: 1000; pointer-events: none; opacity: 0.8; font-family: monospace; }
+    /* music hint removed — no element for it */
   </style>
 </head>
 <body>
@@ -119,12 +161,11 @@
   <source src="love-song.mp3" type="audio/mpeg">
   Your browser does not support audio.
 </audio>
-<div class="music-hint">🎵 Tap anywhere to start romantic music 🎵</div>
 
 <script>
-  // ========== YOUR LIVE RAZORPAY KEY (from dashboard) ==========
-  const RAZORPAY_KEY_ID = "rzp_live_T1RJlj1quLB3Wc";  // ✅ Live key inserted
-  // ============================================================
+  // ========== YOUR LIVE RAZORPAY KEY ==========
+  const RAZORPAY_KEY_ID = "rzp_live_T1RJlj1quLB3Wc";
+  // ============================================
 
   const HEART_EMOJIS = ['❤️','💖','💕','💗','💝','🌸','✨','💘'];
   const SARCASMS = ["Come on, just say yes na 🥺","The button ran away because it knows you want to say yes 😭","Try again… it's a yes-only zone 💀","Even the button is blushing! Say YES","The No button is on vacation 🏖️","Be mine? Tap Yes already!","I'll wait forever... ⏳","No? But my heart says YES 💓"];
@@ -149,18 +190,13 @@
   
   function showSarcasm() { sarcasmToast.textContent = SARCASMS[sarcasmIdx % SARCASMS.length]; sarcasmIdx++; sarcasmToast.classList.add('show'); setTimeout(() => sarcasmToast.classList.remove('show'), 2500); }
   
-  // Better music start: on any user interaction (click/touch)
   function startMusic() {
     if (!musicStarted) {
-      bgMusic.play().then(() => {
-        musicStarted = true;
-        console.log("Music started");
-      }).catch(e => console.log("Autoplay blocked, waiting for user interaction"));
+      bgMusic.play().then(() => { musicStarted = true; }).catch(e => console.log("Autoplay blocked"));
     }
   }
   document.addEventListener('click', startMusic);
   document.addEventListener('touchstart', startMusic);
-  // Also try to play silently on load (will be blocked but doesn't hurt)
   window.addEventListener('load', () => { bgMusic.play().catch(()=>{}); });
   
   document.getElementById('muteBtnPrev').addEventListener('click', () => { muted = !muted; bgMusic.muted = muted; document.getElementById('muteBtnPrev').textContent = muted ? '🔇' : '🔊'; });
@@ -198,7 +234,6 @@
     if (!currentPageData) currentPageData = getCurrentPageData(); 
     const finalAmount = Math.max(0, basePrice - appliedDiscount); 
     if (finalAmount === 0) { onPaymentSuccess('FREE_COUPON_' + Date.now()); return; }
-    // Key is already set, no need to check placeholder
     const options = { key: RAZORPAY_KEY_ID, amount: finalAmount * 100, currency: "INR", name: "LovePage Pro", description: `For ${currentPageData.theirName}`, image: "https://media.tenor.com/WgMTMBNaEEoAAAAi/panda-heart.gif", handler: (response) => onPaymentSuccess(response.razorpay_payment_id), prefill: { name: currentPageData.fromName }, theme: { color: "#ff6b9d" } };
     const rzp = new Razorpay(options); rzp.open();
   });
