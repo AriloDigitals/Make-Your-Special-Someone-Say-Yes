@@ -114,7 +114,7 @@
 </div>
 <div id="sarcasmToast"></div>
 <div id="panelOverlay"></div>
-<div id="payPanel"><button class="panel-close" id="panelCloseBtn">✕</button><p class="panel-title">💖 Unlock Shareable Love Page — ₹79</p><div class="pay-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Coupon: LOVE20 / FEIN / FREEPAGES" autocomplete="off"><button class="apply-btn" id="applyCoupon">Apply</button></div><p class="coupon-msg" id="couponMsg"></p><button class="pay-btn" id="payBtn">Pay ₹79 & Get Link 💕</button></div>
+<div id="payPanel"><button class="panel-close" id="panelCloseBtn">✕</button><p class="panel-title">💖 Unlock Shareable Love Page — ₹79</p><div class="pay-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Coupon:" autocomplete="off"><button class="apply-btn" id="applyCoupon">Apply</button></div><p class="coupon-msg" id="couponMsg"></p><button class="pay-btn" id="payBtn">Pay ₹79 & Get Link 💕</button></div>
 <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
   <source src="love-song.mp3" type="audio/mpeg">
   Your browser does not support audio.
@@ -129,11 +129,10 @@
   const HEART_EMOJIS = ['❤️','💖','💕','💗','💝','🌸','✨','💘'];
   const SARCASMS = ["Come on, just say yes na 🥺","The button ran away because it knows you want to say yes 😭","Try again… it's a yes-only zone 💀","Even the button is blushing! Say YES","The No button is on vacation 🏖️","Be mine? Tap Yes already!","I'll wait forever... ⏳","No? But my heart says YES 💓"];
   const COUPONS = { 
-    LOVE20: { discount: 20, label: 'LOVE20 - ₹20 off' }, 
-    FEIN: { discount: 79, label: "FEIN - FREE 💕" }, 
-    RS1: { discount: 78, label: "RS1 - Just ₹1! 🥺" }, 
-    MAWO: { discount: 20, label: "MAWO - ₹20 off" },
-    FREEPAGES: { discount: 79, label: "FREEPAGES - COMPLETELY FREE 🎉" }
+    LOVE20DA: { discount: 20, label: 'LOVE20DA - ₹20 off' }, 
+    RS1DA: { discount: 78, label: "RS1DA - Just ₹1! 🥺" }, 
+    MAWODA: { discount: 20, label: "MAWODA - ₹20 off" },
+    FREEPAGESDA: { discount: 79, label: "FREEPAGESDA - COMPLETELY FREE 🎉" }
   };  
   
   const formPage = document.getElementById('formPage'), expPage = document.getElementById('expPage'), heartsBg = document.getElementById('heartsBg'), prevHeartsBg = document.getElementById('prevHeartsBg');
