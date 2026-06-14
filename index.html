@@ -78,6 +78,7 @@
     .burst-heart { position: fixed; font-size: 32px; z-index: 400; animation: burstOut 1.2s ease-out forwards; pointer-events: none; }
     @keyframes burstOut { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.2) translate(var(--tx), var(--ty)); opacity: 0; } }
     @media (max-width: 480px) { .form-card { padding: 1.8rem; } .yes-btn, .no-btn { font-size: 1rem; padding: 0.7rem 1.5rem; } }
+    .music-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: white; padding: 6px 14px; border-radius: 50px; font-size: 12px; z-index: 1000; pointer-events: none; opacity: 0.8; font-family: monospace; }
   </style>
 </head>
 <body>
@@ -107,34 +108,40 @@
   <div class="top-controls"><button class="back-btn-prev" id="backBtnPrev" style="display: none;">← Back</button><div style="flex:1"></div><button class="mute-btn" id="muteBtnPrev">🔊</button></div>
   <div id="expContent">
     <div id="questionScreen"><h1 class="exp-title" id="expTitle">Will you be mine? 💖</h1><p class="exp-msg" id="expSubMsg">From: Someone special 💌</p><div class="btn-row"><button class="yes-btn" id="yesBtnExp">Yes 💕</button><button class="no-btn" id="noBtnExp">No 😏</button></div></div>
-    <div id="celebScreen"><h1 class="celeb-title">YAY! I KNEW IT! ❤️</h1><p class="celeb-msg" id="celebMsg">You're my everything 🌹</p><div class="gif-box"><img id="celebGif" src="hug-cute.gif" alt="happy dance"></div><div class="confetti-layer" id="confettiLayer"></div></div>
+    <div id="celebScreen"><h1 class="celeb-title">YAY! I KNEW IT! ❤️</h1><p class="celeb-msg" id="celebMsg">You're my everything 🌹</p><div class="gif-box"><img id="celebGif" src="hug-cute.gif" alt="happy dance" onerror="this.src='https://media.tenor.com/1vY1pzRwIocAAAAi/hug-cute.gif'"></div><div class="confetti-layer" id="confettiLayer"></div></div>
   </div>
   <div id="bottomStrip"><button class="gen-link-btn" id="generateLinkBtn">💌 Generate Link & Share</button><div id="linkBox"><p class="link-title">🎉 Your love link is ready!</p><div class="link-url" id="linkUrl">link will appear</div><div class="link-btns"><button class="copy-link-btn" id="copyLinkBtn">Copy 📋</button><button class="wa-btn" id="waShareBtn">📱 WhatsApp</button></div></div></div>
 </div>
 <div id="sarcasmToast"></div>
 <div id="panelOverlay"></div>
-<div id="payPanel"><button class="panel-close" id="panelCloseBtn">✕</button><p class="panel-title">💖 Unlock Shareable Love Page — ₹79</p><div class="pay-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Coupon: LOVE20 / FEIN" autocomplete="off"><button class="apply-btn" id="applyCoupon">Apply</button></div><p class="coupon-msg" id="couponMsg"></p><button class="pay-btn" id="payBtn">Pay ₹79 & Get Link 💕</button></div>
-<audio id="bgMusic" loop preload="auto"><source src="yours.mp3" type="audio/mpeg"></audio>
+<div id="payPanel"><button class="panel-close" id="panelCloseBtn">✕</button><p class="panel-title">💖 Unlock Shareable Love Page — ₹79</p><div class="pay-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Coupon: LOVE20 / FEIN / FREEPAGES" autocomplete="off"><button class="apply-btn" id="applyCoupon">Apply</button></div><p class="coupon-msg" id="couponMsg"></p><button class="pay-btn" id="payBtn">Pay ₹79 & Get Link 💕</button></div>
+<audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
+  <source src="love-song.mp3" type="audio/mpeg">
+  Your browser does not support audio.
+</audio>
+<div class="music-hint">🎵 Tap anywhere to start romantic music 🎵</div>
 
 <script>
-  // ========== 🔴 IMPORTANT: REPLACE WITH YOUR RAZORPAY KEY ID ==========
-  const RAZORPAY_KEY_ID = "rzp_test_YOUR_KEY_HERE";  // <-- PASTE YOUR ACTUAL KEY (starts with rzp_test_ or rzp_live_)
-  // ====================================================================
+  // ========== YOUR LIVE RAZORPAY KEY (from dashboard) ==========
+  const RAZORPAY_KEY_ID = "rzp_live_T1RJlj1quLB3Wc";  // ✅ Live key inserted
+  // ============================================================
 
   const HEART_EMOJIS = ['❤️','💖','💕','💗','💝','🌸','✨','💘'];
   const SARCASMS = ["Come on, just say yes na 🥺","The button ran away because it knows you want to say yes 😭","Try again… it's a yes-only zone 💀","Even the button is blushing! Say YES","The No button is on vacation 🏖️","Be mine? Tap Yes already!","I'll wait forever... ⏳","No? But my heart says YES 💓"];
   const COUPONS = { 
-  LOVE20: { discount: 20, label: 'LOVE20 - ₹20 off' }, 
-  FEIN: { discount: 79, label: "FEIN - FREE 💕" }, 
-  RS1: { discount: 78, label: "RS1 - Just ₹1! 🥺" }, 
-  MAWO: { discount: 20, label: "LOVE20 - ₹20 off" },
-  FREEPAGES: { discount: 79, label: "FREEPAGE - COMPLETELY FREE 🎉" }   // 👈 New unique free coupon
-};  
+    LOVE20: { discount: 20, label: 'LOVE20 - ₹20 off' }, 
+    FEIN: { discount: 79, label: "FEIN - FREE 💕" }, 
+    RS1: { discount: 78, label: "RS1 - Just ₹1! 🥺" }, 
+    MAWO: { discount: 20, label: "MAWO - ₹20 off" },
+    FREEPAGES: { discount: 79, label: "FREEPAGES - COMPLETELY FREE 🎉" }
+  };  
+  
   const formPage = document.getElementById('formPage'), expPage = document.getElementById('expPage'), heartsBg = document.getElementById('heartsBg'), prevHeartsBg = document.getElementById('prevHeartsBg');
   const bgMusic = document.getElementById('bgMusic'), noBtn = document.getElementById('noBtnExp'), sarcasmToast = document.getElementById('sarcasmToast');
   const generateLinkBtn = document.getElementById('generateLinkBtn'), linkBox = document.getElementById('linkBox'), linkUrl = document.getElementById('linkUrl');
   const watermarkEl = document.getElementById('watermarkEl'), backBtnPrev = document.getElementById('backBtnPrev'), payPanel = document.getElementById('payPanel'), panelOverlay = document.getElementById('panelOverlay');
   let muted = false, sarcasmIdx = 0, appliedDiscount = 0, basePrice = 79, isRecipientMode = false, previewHeartInterval = null, currentPageData = null;
+  let musicStarted = false;
   
   function spawnHeart(container) { const h = document.createElement('div'); h.className = 'hb'; h.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)]; h.style.left = Math.random() * 100 + '%'; h.style.animationDuration = (Math.random() * 5 + 5) + 's'; h.style.fontSize = (Math.random() * 14 + 10) + 'px'; container.appendChild(h); setTimeout(() => h.remove(), 13000); }
   setInterval(() => spawnHeart(heartsBg), 500);
@@ -142,7 +149,21 @@
   document.querySelectorAll('.q-opt input[type=radio]').forEach(radio => { radio.addEventListener('change', () => { document.querySelectorAll('.q-opt').forEach(opt => opt.classList.remove('selected')); radio.closest('.q-opt').classList.add('selected'); document.getElementById('customQ').style.display = radio.value === 'custom' ? 'block' : 'none'; }); });
   
   function showSarcasm() { sarcasmToast.textContent = SARCASMS[sarcasmIdx % SARCASMS.length]; sarcasmIdx++; sarcasmToast.classList.add('show'); setTimeout(() => sarcasmToast.classList.remove('show'), 2500); }
-  document.addEventListener('click', () => { bgMusic.play().catch(()=>{}); }, { once: true });
+  
+  // Better music start: on any user interaction (click/touch)
+  function startMusic() {
+    if (!musicStarted) {
+      bgMusic.play().then(() => {
+        musicStarted = true;
+        console.log("Music started");
+      }).catch(e => console.log("Autoplay blocked, waiting for user interaction"));
+    }
+  }
+  document.addEventListener('click', startMusic);
+  document.addEventListener('touchstart', startMusic);
+  // Also try to play silently on load (will be blocked but doesn't hurt)
+  window.addEventListener('load', () => { bgMusic.play().catch(()=>{}); });
+  
   document.getElementById('muteBtnPrev').addEventListener('click', () => { muted = !muted; bgMusic.muted = muted; document.getElementById('muteBtnPrev').textContent = muted ? '🔇' : '🔊'; });
   
   document.getElementById('couponInput').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
@@ -152,7 +173,7 @@
   function decodePageData(str) { try { let base64 = str.replace(/-/g, '+').replace(/_/g, '/'); while (base64.length % 4) base64 += '='; const binary = atob(base64); const bytes = Uint8Array.from(binary, ch => ch.charCodeAt(0)); return JSON.parse(new TextDecoder().decode(bytes)); } catch(e) { return null; } }
   function getCurrentPageData() { const theirName = document.getElementById('theirName').value.trim() || 'Sweetheart'; const fromName = document.getElementById('yourName').value.trim() || 'Your Love'; let question = document.querySelector('input[name="question"]:checked')?.value || 'Will you be my girlfriend?'; if (question === 'custom') question = document.getElementById('customQ').value.trim() || 'Will you be mine?'; const msg = document.getElementById('yourMsg').value.trim() || "You're the most beautiful soul. I adore you endlessly. 💕"; return { theirName, fromName, question, msg }; }
   function resetExperienceUI() { document.getElementById('questionScreen').style.display = 'block'; document.getElementById('celebScreen').style.display = 'none'; document.getElementById('confettiLayer').innerHTML = ''; linkBox.style.display = 'none'; document.getElementById('couponMsg').innerHTML = ''; document.getElementById('couponInput').value = ''; appliedDiscount = 0; document.getElementById('payBtn').textContent = 'Pay ₹79 & Get Link 💕'; sarcasmIdx = 0; if(noBtn) { noBtn.style.left = ''; noBtn.style.top = ''; } }
-  function launchExperience(data, recipientMode) { isRecipientMode = !!recipientMode; currentPageData = data; document.getElementById('expTitle').innerHTML = `${data.question}<br>${data.theirName} 💖`; document.getElementById('expSubMsg').innerHTML = `From: ${data.fromName} 💌`; document.getElementById('celebMsg').innerHTML = `${data.msg} <span style="display:block;font-size:0.9rem;margin-top:6px;">~ ${data.fromName}</span>`; resetExperienceUI(); watermarkEl.style.display = isRecipientMode ? 'none' : 'flex'; backBtnPrev.style.display = isRecipientMode ? 'none' : 'block'; generateLinkBtn.style.display = isRecipientMode ? 'none' : 'inline-flex'; formPage.style.display = 'none'; expPage.style.display = 'flex'; bgMusic.play().catch(()=>{}); if(previewHeartInterval) clearInterval(previewHeartInterval); prevHeartsBg.innerHTML = ''; previewHeartInterval = setInterval(() => spawnHeart(prevHeartsBg), 450); }
+  function launchExperience(data, recipientMode) { isRecipientMode = !!recipientMode; currentPageData = data; document.getElementById('expTitle').innerHTML = `${data.question}<br>${data.theirName} 💖`; document.getElementById('expSubMsg').innerHTML = `From: ${data.fromName} 💌`; document.getElementById('celebMsg').innerHTML = `${data.msg} <span style="display:block;font-size:0.9rem;margin-top:6px;">~ ${data.fromName}</span>`; resetExperienceUI(); watermarkEl.style.display = isRecipientMode ? 'none' : 'flex'; backBtnPrev.style.display = isRecipientMode ? 'none' : 'block'; generateLinkBtn.style.display = isRecipientMode ? 'none' : 'inline-flex'; formPage.style.display = 'none'; expPage.style.display = 'flex'; startMusic(); if(previewHeartInterval) clearInterval(previewHeartInterval); prevHeartsBg.innerHTML = ''; previewHeartInterval = setInterval(() => spawnHeart(prevHeartsBg), 450); }
   function showFormPage() { expPage.style.display = 'none'; formPage.style.display = 'flex'; closePayPanel(); bgMusic.pause(); bgMusic.currentTime = 0; if(previewHeartInterval) { clearInterval(previewHeartInterval); previewHeartInterval = null; } }
   
   window.addEventListener('DOMContentLoaded', () => { const params = new URLSearchParams(window.location.search); const d = params.get('d'); if (d) { const data = decodePageData(d); if (data && data.theirName && data.fromName && data.question && data.msg) { launchExperience(data, true); return; } } showFormPage(); });
@@ -178,7 +199,7 @@
     if (!currentPageData) currentPageData = getCurrentPageData(); 
     const finalAmount = Math.max(0, basePrice - appliedDiscount); 
     if (finalAmount === 0) { onPaymentSuccess('FREE_COUPON_' + Date.now()); return; }
-    if (RAZORPAY_KEY_ID === "rzp_test_YOUR_KEY_HERE") { alert("⚠️ Razorpay key missing! Please replace 'rzp_test_YOUR_KEY_HERE' with your actual Razorpay Key ID from dashboard.razorpay.com"); return; }
+    // Key is already set, no need to check placeholder
     const options = { key: RAZORPAY_KEY_ID, amount: finalAmount * 100, currency: "INR", name: "LovePage Pro", description: `For ${currentPageData.theirName}`, image: "https://media.tenor.com/WgMTMBNaEEoAAAAi/panda-heart.gif", handler: (response) => onPaymentSuccess(response.razorpay_payment_id), prefill: { name: currentPageData.fromName }, theme: { color: "#ff6b9d" } };
     const rzp = new Razorpay(options); rzp.open();
   });
@@ -186,24 +207,5 @@
   document.getElementById('copyLinkBtn').addEventListener('click', () => { const link = linkUrl.textContent; navigator.clipboard.writeText(link).then(() => { const btn = document.getElementById('copyLinkBtn'); btn.textContent = 'Copied! ✓'; setTimeout(() => btn.textContent = 'Copy 📋', 2000); }); });
   document.getElementById('waShareBtn').addEventListener('click', () => { const link = linkUrl.textContent; window.open(`https://wa.me/?text=${encodeURIComponent(`💕 A special love page just for you! 💕\n\n${link}`)}`, '_blank'); });
 </script>
-
-<!-- 
-  🚀 HOW TO ACTIVATE PAYMENT & EARN MONEY FAST:
-
-  1. Go to https://razorpay.com and sign up (free, Indian payment gateway).
-  2. After login, go to Dashboard → Settings → API Keys.
-  3. Generate a new key (Test mode for trying, Live mode for real money).
-  4. Copy the "Key ID" (looks like rzp_test_xxxxx or rzp_live_xxxxx).
-  5. Open this HTML file, find the line: const RAZORPAY_KEY_ID = "rzp_test_YOUR_KEY_HERE";
-  6. Replace "rzp_test_YOUR_KEY_HERE" with your actual Key ID.
-  7. Save the file and upload to any web hosting (Netlify, Vercel, GitHub Pages, or even a simple server).
-  8. Share the link with your audience. When they click "Generate Link & Share", they pay ₹79 (or less with coupons) and immediately get a unique shareable proposal link.
-
-  🎵 BACKGROUND MUSIC: Replace "yours.mp3" with your actual romantic song file in the same folder.
-
-  💡 TIP: Use the coupon "FEIN" for free access (testing). Remove or change coupons later.
-
-  ✅ That's it! Your payment gateway is now live.
--->
 </body>
 </html>
