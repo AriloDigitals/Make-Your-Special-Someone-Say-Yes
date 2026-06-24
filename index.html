@@ -42,53 +42,11 @@
     .top-controls { position: absolute; top: 20px; left: 16px; right: 16px; display: flex; justify-content: space-between; z-index: 60; gap: 10px; }
     .back-btn-prev, .mute-btn { background: rgba(255,255,255,0.9); border: none; border-radius: 60px; padding: 0.5rem 1.2rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
     #expContent { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5rem 1.5rem 7rem; text-align: center; overflow-y: auto; }
-    
-    /* ===== CLASSY & ROMANTIC FONTS FOR EXPERIENCE PAGE ===== */
-    .exp-title { 
-      font-family: 'Great Vibes', cursive; 
-      font-size: clamp(2.5rem, 9vw, 4.5rem); 
-      color: #fff; 
-      text-shadow: 0 0 20px rgba(0,0,0,0.4), 2px 2px 4px rgba(0,0,0,0.2);
-      margin-bottom: 1rem; 
-      white-space: pre-line;
-      letter-spacing: 2px;
-      font-weight: normal;
-    }
-    .exp-msg { 
-      font-family: 'Playfair Display', serif; 
-      font-size: clamp(1rem, 4vw, 1.3rem); 
-      font-style: italic;
-      color: rgba(255,255,255,0.95); 
-      max-width: 500px; 
-      margin: 0 auto 2rem; 
-      background: rgba(0,0,0,0.15);
-      backdrop-filter: blur(8px);
-      padding: 0.5rem 1rem;
-      border-radius: 60px;
-    }
-    .yes-btn, .no-btn {
-      font-family: 'Playfair Display', serif;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-    .celeb-title {
-      font-family: 'Pacifico', cursive;
-      font-size: clamp(2rem,7vw,3.8rem);
-      color: #FFE484;
-      text-shadow: 3px 3px 0 #c44569;
-      letter-spacing: 1px;
-    }
-    .celeb-msg {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.4rem,5vw,2rem);
-      background: rgba(0,0,0,0.2);
-      backdrop-filter: blur(12px);
-      padding: 0.6rem 1.5rem;
-      border-radius: 60px;
-      color: white;
-      font-weight: normal;
-    }
-    
+    .exp-title { font-family: 'Great Vibes', cursive; font-size: clamp(2.5rem, 9vw, 4.5rem); color: #fff; text-shadow: 0 0 20px rgba(0,0,0,0.4), 2px 2px 4px rgba(0,0,0,0.2); margin-bottom: 1rem; white-space: pre-line; letter-spacing: 2px; font-weight: normal; }
+    .exp-msg { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 4vw, 1.3rem); font-style: italic; color: rgba(255,255,255,0.95); max-width: 500px; margin: 0 auto 2rem; background: rgba(0,0,0,0.15); backdrop-filter: blur(8px); padding: 0.5rem 1rem; border-radius: 60px; }
+    .yes-btn, .no-btn { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: 1px; }
+    .celeb-title { font-family: 'Pacifico', cursive; font-size: clamp(2rem,7vw,3.8rem); color: #FFE484; text-shadow: 3px 3px 0 #c44569; letter-spacing: 1px; }
+    .celeb-msg { font-family: 'Great Vibes', cursive; font-size: clamp(1.4rem,5vw,2rem); background: rgba(0,0,0,0.2); backdrop-filter: blur(12px); padding: 0.6rem 1.5rem; border-radius: 60px; color: white; font-weight: normal; }
     .btn-row { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; position: relative; }
     .yes-btn { padding: 0.9rem 2.5rem; font-size: 1.3rem; font-weight: 700; border: none; border-radius: 60px; background: linear-gradient(45deg, #ff69b4, #ff1493); color: white; box-shadow: 0 12px 30px rgba(255,20,147,0.5); cursor: pointer; transition: 0.2s; }
     .yes-btn:hover { transform: scale(1.08); }
@@ -120,7 +78,7 @@
     .burst-heart { position: fixed; font-size: 32px; z-index: 400; animation: burstOut 1.2s ease-out forwards; pointer-events: none; }
     @keyframes burstOut { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.2) translate(var(--tx), var(--ty)); opacity: 0; } }
     @media (max-width: 480px) { .form-card { padding: 1.8rem; } .yes-btn, .no-btn { font-size: 1rem; padding: 0.7rem 1.5rem; } }
-    /* music hint removed — no element for it */
+    .coupon-hint { margin-top: 0.5rem; font-size: 0.8rem; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -156,16 +114,28 @@
 </div>
 <div id="sarcasmToast"></div>
 <div id="panelOverlay"></div>
-<div id="payPanel"><button class="panel-close" id="panelCloseBtn">✕</button><p class="panel-title">💖 Unlock Shareable Love Page — ₹79</p><div class="pay-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Coupon:" autocomplete="off"><button class="apply-btn" id="applyCoupon">Apply</button></div><p class="coupon-msg" id="couponMsg"></p><button class="pay-btn" id="payBtn">Pay ₹79 & Get Link 💕</button></div>
+<div id="payPanel">
+  <button class="panel-close" id="panelCloseBtn">✕</button>
+  <p class="panel-title">💖 Unlock Shareable Love Page — ₹79</p>
+  <div class="pay-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Coupon:" autocomplete="off"><button class="apply-btn" id="applyCoupon">Apply</button></div>
+  <p class="coupon-msg" id="couponMsg"></p>
+  <button class="pay-btn" id="payBtn">Pay ₹79 & Get Link 💕</button>
+  <div class="coupon-hint">🎁 Use coupon <strong>FREEPAGESDA</strong> for a free link (no payment)</div>
+</div>
 <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
   <source src="love-song.mp3" type="audio/mpeg">
   Your browser does not support audio.
 </audio>
 
 <script>
-  // ========== YOUR LIVE RAZORPAY KEY ==========
-  const RAZORPAY_KEY_ID = "rzp_live_T1RJlj1quLB3Wc";
-  // ============================================
+  // =================================================================
+  // 🔴 IMPORTANT: YOUR RAZORPAY LIVE KEY – REPLACE IF NEEDED
+  const RAZORPAY_KEY_ID = "rzp_live_T1RJlj1quLB3Wc";  // Your live key
+  // =================================================================
+
+  // ✅ To test payments without real money, use coupon: FREEPAGESDA
+  // ✅ For live payments, make sure your domain is whitelisted in Razorpay Dashboard → API Keys → Allowed Domains
+  //    Add: arilodigitals.github.io  (and also the full path if needed)
 
   const HEART_EMOJIS = ['❤️','💖','💕','💗','💝','🌸','✨','💘'];
   const SARCASMS = ["Come on, just say yes na 🥺","The button ran away because it knows you want to say yes 😭","Try again… it's a yes-only zone 💀","Even the button is blushing! Say YES","The No button is on vacation 🏖️","Be mine? Tap Yes already!","I'll wait forever... ⏳","No? But my heart says YES 💓"];
@@ -234,8 +204,36 @@
     if (!currentPageData) currentPageData = getCurrentPageData(); 
     const finalAmount = Math.max(0, basePrice - appliedDiscount); 
     if (finalAmount === 0) { onPaymentSuccess('FREE_COUPON_' + Date.now()); return; }
-    const options = { key: RAZORPAY_KEY_ID, amount: finalAmount * 100, currency: "INR", name: "LovePage Pro", description: `For ${currentPageData.theirName}`, image: "https://media.tenor.com/WgMTMBNaEEoAAAAi/panda-heart.gif", handler: (response) => onPaymentSuccess(response.razorpay_payment_id), prefill: { name: currentPageData.fromName }, theme: { color: "#ff6b9d" } };
-    const rzp = new Razorpay(options); rzp.open();
+    
+    // If key is not set or still placeholder, alert
+    if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === "YOUR_RAZORPAY_KEY_ID") {
+      alert("⚠️ Razorpay key is not configured. Please replace the key in the script.");
+      return;
+    }
+    
+    const options = { 
+      key: RAZORPAY_KEY_ID, 
+      amount: finalAmount * 100, 
+      currency: "INR", 
+      name: "LovePage Pro", 
+      description: `For ${currentPageData.theirName}`, 
+      image: "https://media.tenor.com/WgMTMBNaEEoAAAAi/panda-heart.gif", 
+      handler: (response) => onPaymentSuccess(response.razorpay_payment_id),
+      prefill: { name: currentPageData.fromName },
+      theme: { color: "#ff6b9d" },
+      modal: {
+        ondismiss: function() {
+          console.log("Payment modal closed");
+        }
+      }
+    };
+    
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (response) {
+      alert("❌ Payment Failed!\nReason: " + response.error.description + "\n\n💡 Try using coupon FREEPAGESDA for a free link.");
+      console.error("Payment failed:", response.error);
+    });
+    rzp.open();
   });
   
   document.getElementById('copyLinkBtn').addEventListener('click', () => { const link = linkUrl.textContent; navigator.clipboard.writeText(link).then(() => { const btn = document.getElementById('copyLinkBtn'); btn.textContent = 'Copied! ✓'; setTimeout(() => btn.textContent = 'Copy 📋', 2000); }); });
