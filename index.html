@@ -129,13 +129,13 @@
 
 <script>
   // =================================================================
-  // 🔴 IMPORTANT: YOUR RAZORPAY LIVE KEY – REPLACE IF NEEDED
-  const RAZORPAY_KEY_ID = "rzp_live_T1RJlj1quLB3Wc";  // Your live key
+  // 🔴 UPDATED LIVE RAZORPAY KEY (2026-06-24)
+  const RAZORPAY_KEY_ID = "rzp_live_T5TlzhwOqc4OSr";   // New key
   // =================================================================
 
-  // ✅ To test payments without real money, use coupon: FREEPAGESDA
-  // ✅ For live payments, make sure your domain is whitelisted in Razorpay Dashboard → API Keys → Allowed Domains
-  //    Add: arilodigitals.github.io  (and also the full path if needed)
+  // ✅ For live payments, ensure this domain is whitelisted:
+  //    arilodigitals.github.io (in Razorpay Dashboard → API Keys → Allowed Domains)
+  // ✅ Use coupon FREEPAGESDA for a free link (no payment)
 
   const HEART_EMOJIS = ['❤️','💖','💕','💗','💝','🌸','✨','💘'];
   const SARCASMS = ["Come on, just say yes na 🥺","The button ran away because it knows you want to say yes 😭","Try again… it's a yes-only zone 💀","Even the button is blushing! Say YES","The No button is on vacation 🏖️","Be mine? Tap Yes already!","I'll wait forever... ⏳","No? But my heart says YES 💓"];
@@ -145,21 +145,21 @@
     MAWODA: { discount: 20, label: "MAWODA - ₹20 off" },
     FREEPAGESDA: { discount: 79, label: "FREEPAGESDA - COMPLETELY FREE 🎉" }
   };  
-  
+
   const formPage = document.getElementById('formPage'), expPage = document.getElementById('expPage'), heartsBg = document.getElementById('heartsBg'), prevHeartsBg = document.getElementById('prevHeartsBg');
   const bgMusic = document.getElementById('bgMusic'), noBtn = document.getElementById('noBtnExp'), sarcasmToast = document.getElementById('sarcasmToast');
   const generateLinkBtn = document.getElementById('generateLinkBtn'), linkBox = document.getElementById('linkBox'), linkUrl = document.getElementById('linkUrl');
   const watermarkEl = document.getElementById('watermarkEl'), backBtnPrev = document.getElementById('backBtnPrev'), payPanel = document.getElementById('payPanel'), panelOverlay = document.getElementById('panelOverlay');
   let muted = false, sarcasmIdx = 0, appliedDiscount = 0, basePrice = 79, isRecipientMode = false, previewHeartInterval = null, currentPageData = null;
   let musicStarted = false;
-  
+
   function spawnHeart(container) { const h = document.createElement('div'); h.className = 'hb'; h.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)]; h.style.left = Math.random() * 100 + '%'; h.style.animationDuration = (Math.random() * 5 + 5) + 's'; h.style.fontSize = (Math.random() * 14 + 10) + 'px'; container.appendChild(h); setTimeout(() => h.remove(), 13000); }
   setInterval(() => spawnHeart(heartsBg), 500);
-  
+
   document.querySelectorAll('.q-opt input[type=radio]').forEach(radio => { radio.addEventListener('change', () => { document.querySelectorAll('.q-opt').forEach(opt => opt.classList.remove('selected')); radio.closest('.q-opt').classList.add('selected'); document.getElementById('customQ').style.display = radio.value === 'custom' ? 'block' : 'none'; }); });
-  
+
   function showSarcasm() { sarcasmToast.textContent = SARCASMS[sarcasmIdx % SARCASMS.length]; sarcasmIdx++; sarcasmToast.classList.add('show'); setTimeout(() => sarcasmToast.classList.remove('show'), 2500); }
-  
+
   function startMusic() {
     if (!musicStarted) {
       bgMusic.play().then(() => { musicStarted = true; }).catch(e => console.log("Autoplay blocked"));
@@ -168,44 +168,43 @@
   document.addEventListener('click', startMusic);
   document.addEventListener('touchstart', startMusic);
   window.addEventListener('load', () => { bgMusic.play().catch(()=>{}); });
-  
+
   document.getElementById('muteBtnPrev').addEventListener('click', () => { muted = !muted; bgMusic.muted = muted; document.getElementById('muteBtnPrev').textContent = muted ? '🔇' : '🔊'; });
-  
+
   document.getElementById('couponInput').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
   document.getElementById('applyCoupon').addEventListener('click', () => { const code = document.getElementById('couponInput').value.trim().toUpperCase(); const msg = document.getElementById('couponMsg'); const payBtn = document.getElementById('payBtn'); if (COUPONS[code]) { appliedDiscount = COUPONS[code].discount; const final = Math.max(0, basePrice - appliedDiscount); msg.textContent = '✓ ' + COUPONS[code].label; msg.style.color = '#1a8a4a'; payBtn.textContent = final === 0 ? '🎁 Get Free Link 🎁' : `Pay ₹${final} & Get Link 💕`; } else if (code === '') { appliedDiscount = 0; msg.textContent = ''; payBtn.textContent = 'Pay ₹79 & Get Link 💕'; } else { appliedDiscount = 0; msg.textContent = '✗ Invalid coupon'; msg.style.color = '#c0392b'; payBtn.textContent = 'Pay ₹79 & Get Link 💕'; } });
-  
+
   function encodePageData(data) { const json = JSON.stringify(data); const bytes = new TextEncoder().encode(json); let binary = ''; bytes.forEach(b => binary += String.fromCharCode(b)); const base64 = btoa(binary); return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, ''); }
   function decodePageData(str) { try { let base64 = str.replace(/-/g, '+').replace(/_/g, '/'); while (base64.length % 4) base64 += '='; const binary = atob(base64); const bytes = Uint8Array.from(binary, ch => ch.charCodeAt(0)); return JSON.parse(new TextDecoder().decode(bytes)); } catch(e) { return null; } }
   function getCurrentPageData() { const theirName = document.getElementById('theirName').value.trim() || 'Sweetheart'; const fromName = document.getElementById('yourName').value.trim() || 'Your Love'; let question = document.querySelector('input[name="question"]:checked')?.value || 'Will you be my girlfriend?'; if (question === 'custom') question = document.getElementById('customQ').value.trim() || 'Will you be mine?'; const msg = document.getElementById('yourMsg').value.trim() || "You're the most beautiful soul. I adore you endlessly. 💕"; return { theirName, fromName, question, msg }; }
   function resetExperienceUI() { document.getElementById('questionScreen').style.display = 'block'; document.getElementById('celebScreen').style.display = 'none'; document.getElementById('confettiLayer').innerHTML = ''; linkBox.style.display = 'none'; document.getElementById('couponMsg').innerHTML = ''; document.getElementById('couponInput').value = ''; appliedDiscount = 0; document.getElementById('payBtn').textContent = 'Pay ₹79 & Get Link 💕'; sarcasmIdx = 0; if(noBtn) { noBtn.style.left = ''; noBtn.style.top = ''; } }
   function launchExperience(data, recipientMode) { isRecipientMode = !!recipientMode; currentPageData = data; document.getElementById('expTitle').innerHTML = `${data.question}<br>${data.theirName} 💖`; document.getElementById('expSubMsg').innerHTML = `From: ${data.fromName} 💌`; document.getElementById('celebMsg').innerHTML = `${data.msg} <span style="display:block;font-size:0.9rem;margin-top:6px;">~ ${data.fromName}</span>`; resetExperienceUI(); watermarkEl.style.display = isRecipientMode ? 'none' : 'flex'; backBtnPrev.style.display = isRecipientMode ? 'none' : 'block'; generateLinkBtn.style.display = isRecipientMode ? 'none' : 'inline-flex'; formPage.style.display = 'none'; expPage.style.display = 'flex'; startMusic(); if(previewHeartInterval) clearInterval(previewHeartInterval); prevHeartsBg.innerHTML = ''; previewHeartInterval = setInterval(() => spawnHeart(prevHeartsBg), 450); }
   function showFormPage() { expPage.style.display = 'none'; formPage.style.display = 'flex'; closePayPanel(); bgMusic.pause(); bgMusic.currentTime = 0; if(previewHeartInterval) { clearInterval(previewHeartInterval); previewHeartInterval = null; } }
-  
+
   window.addEventListener('DOMContentLoaded', () => { const params = new URLSearchParams(window.location.search); const d = params.get('d'); if (d) { const data = decodePageData(d); if (data && data.theirName && data.fromName && data.question && data.msg) { launchExperience(data, true); return; } } showFormPage(); });
   document.getElementById('previewBtn').addEventListener('click', () => { launchExperience(getCurrentPageData(), false); });
   backBtnPrev.addEventListener('click', showFormPage);
-  
+
   function runNoBtn() { if(!noBtn) return; const maxX = window.innerWidth - noBtn.offsetWidth - 30; const maxY = window.innerHeight - noBtn.offsetHeight - 80; noBtn.style.left = Math.max(10, Math.random() * maxX) + 'px'; noBtn.style.top = Math.max(40, Math.random() * maxY) + 'px'; showSarcasm(); }
   if(noBtn) { noBtn.addEventListener('mouseenter', runNoBtn); noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); runNoBtn(); }, { passive: false }); noBtn.addEventListener('click', (e) => { e.preventDefault(); runNoBtn(); }); }
-  
+
   document.getElementById('yesBtnExp').addEventListener('click', () => { document.getElementById('questionScreen').style.display = 'none'; const celeb = document.getElementById('celebScreen'); celeb.style.display = 'flex'; const layer = document.getElementById('confettiLayer'); layer.innerHTML = ''; const emojis = ['❤️','💖','🌸','✨','💕','🌟','💗']; for(let i=0;i<30;i++) { const c = document.createElement('div'); c.className = 'cele-heart'; c.textContent = emojis[Math.floor(Math.random()*emojis.length)]; c.style.left = Math.random()*100+'%'; c.style.fontSize = (Math.random()*16+20)+'px'; c.style.animationDuration = (Math.random()*2+3)+'s'; c.style.animationDelay = (Math.random()*3)+'s'; layer.appendChild(c); } });
-  
+
   function openPayPanel() { panelOverlay.style.display = 'block'; payPanel.style.display = 'block'; }
   function closePayPanel() { panelOverlay.style.display = 'none'; payPanel.style.display = 'none'; }
   generateLinkBtn.addEventListener('click', openPayPanel);
   panelOverlay.addEventListener('click', closePayPanel);
   document.getElementById('panelCloseBtn').addEventListener('click', closePayPanel);
-  
+
   function buildShareLink(data) { const encoded = encodePageData(data); const url = new URL(window.location.href); url.search = ''; url.hash = ''; url.searchParams.set('d', encoded); return url.toString(); }
   function burstMoneyConfetti() { for(let i=0;i<40;i++) { const heart = document.createElement('div'); heart.className = 'burst-heart'; heart.textContent = HEART_EMOJIS[Math.floor(Math.random()*HEART_EMOJIS.length)]; heart.style.left = window.innerWidth/2 + (Math.random()-0.5)*150 + 'px'; heart.style.top = window.innerHeight/2 + (Math.random()-0.5)*120 + 'px'; const tx = (Math.random()-0.5)*280; const ty = (Math.random()-1)*200; heart.style.setProperty('--tx', tx+'px'); heart.style.setProperty('--ty', ty+'px'); document.body.appendChild(heart); setTimeout(()=>heart.remove(), 1300); } }
   function onPaymentSuccess(paymentId) { closePayPanel(); const data = currentPageData || getCurrentPageData(); const link = buildShareLink(data); generateLinkBtn.style.display = 'none'; linkBox.style.display = 'block'; linkUrl.textContent = link; burstMoneyConfetti(); setTimeout(burstMoneyConfetti, 400); console.log("✅ Payment success:", paymentId); }
-  
+
   document.getElementById('payBtn').addEventListener('click', () => { 
     if (!currentPageData) currentPageData = getCurrentPageData(); 
     const finalAmount = Math.max(0, basePrice - appliedDiscount); 
     if (finalAmount === 0) { onPaymentSuccess('FREE_COUPON_' + Date.now()); return; }
     
-    // If key is not set or still placeholder, alert
     if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === "YOUR_RAZORPAY_KEY_ID") {
       alert("⚠️ Razorpay key is not configured. Please replace the key in the script.");
       return;
@@ -235,7 +234,7 @@
     });
     rzp.open();
   });
-  
+
   document.getElementById('copyLinkBtn').addEventListener('click', () => { const link = linkUrl.textContent; navigator.clipboard.writeText(link).then(() => { const btn = document.getElementById('copyLinkBtn'); btn.textContent = 'Copied! ✓'; setTimeout(() => btn.textContent = 'Copy 📋', 2000); }); });
   document.getElementById('waShareBtn').addEventListener('click', () => { const link = linkUrl.textContent; window.open(`https://wa.me/?text=${encodeURIComponent(`💕 A special love page just for you! 💕\n\n${link}`)}`, '_blank'); });
 </script>
